@@ -8,11 +8,11 @@ namespace SabberStoneBasicAI.PartialObservation
 {
 	class GameStats
 	{
-		private int turns = 0;
-		private int nr_games = 0;
+		public int turns = 0;
+		public int nr_games = 0;
 		private int[] wins = new[] { 0, 0 };
 		private int draws = 0;
-		private double[] time_per_player = new[] { 0D, 0D };
+		public double[] time_per_player = new[] { 0D, 0D };
 		private int[] exception_count = new[] { 0, 0 };
 		private Dictionary<int, string> exceptions = new Dictionary<int, string>();
 

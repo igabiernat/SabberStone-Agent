@@ -264,3 +264,4 @@ __pycache__/
 /core-extensions/SabberStoneCoreConsole/src/PowerHistory/UnitTests.cs
 /core-extensions/SabberStoneCoreConsole/src/PowerHistory/PowerHistoryTest.cs
 /core-extensions/SabberStoneCoreConsole/src/PowerHistory/PowerHistoryStateTransition.cs
+Results.csv

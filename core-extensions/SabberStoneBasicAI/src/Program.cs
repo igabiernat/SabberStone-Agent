@@ -25,6 +25,7 @@ using SabberStoneBasicAI.Score;
 using SabberStoneBasicAI.AIAgents;
 using SabberStoneBasicAI.PartialObservation;
 using SabberStoneBasicAI.CompetitionEvaluation;
+using SabberStoneBasicAI.AIAgents.Igagent;
 
 namespace SabberStoneBasicAI
 {
@@ -41,9 +42,9 @@ namespace SabberStoneBasicAI
 			//OneTurn();
 			//FullGame();
 			//RandomGames();
-			//TestPOGame();
+			TestPOGame();
 			//TestFullGames();
-			TestTournament();
+			//TestTournament();
 
 			Console.WriteLine("Test ended!");
 			Console.ReadLine();
@@ -52,19 +53,18 @@ namespace SabberStoneBasicAI
 		public static void TestTournament()
 		{
 			Agent[] agents = new Agent[2];
-			agents[0] = new Agent(typeof(RandomAgent), "Random Agent");
+			agents[0] = new Agent(typeof(IgAgent), "AlvaroAgent");
 			agents[1] = new Agent(typeof(GreedyAgent), "Greedy Agent");
 			//agents[2] = new Agent(typeof(DynamicLookaheadAgent), "Dynamic Lookahead Agent");
 			//agents[3] = new Agent(typeof(BeamSearchAgent), "Beam Search Agent");
 
-			CompetitionEvaluation.Deck[] decks = new CompetitionEvaluation.Deck[3];
-			decks[0] = new CompetitionEvaluation.Deck(Decks.RenoKazakusMage, CardClass.MAGE, "Mage");
+			CompetitionEvaluation.Deck[] decks = new CompetitionEvaluation.Deck[2];
+			decks[0] = new CompetitionEvaluation.Deck(Decks.ZooDiscardWarlock, CardClass.WARRIOR, "Warlock");
 			decks[1] = new CompetitionEvaluation.Deck(Decks.AggroPirateWarrior, CardClass.WARRIOR, "Warrior");
-			decks[2] = new CompetitionEvaluation.Deck(Decks.MidrangeJadeShaman, CardClass.SHAMAN, "Shaman");
 
 			RoundRobinCompetition competition = new RoundRobinCompetition(agents, decks, "results.txt");
 			competition.CreateTasks(100);
-			competition.startEvaluation(8);
+			competition.startEvaluation(1);
 
 			Console.WriteLine("Total Games Played: " + competition.GetTotalGamesPlayed());
 			competition.PrintAgentStats();
@@ -77,25 +77,25 @@ namespace SabberStoneBasicAI
 			var gameConfig = new GameConfig()
 			{
 				StartPlayer = 1,
-				Player1HeroClass = CardClass.MAGE,
-				Player2HeroClass = CardClass.MAGE,
-				Player1Deck = Decks.RenoKazakusMage,
-				Player2Deck = Decks.RenoKazakusMage,
+				Player1HeroClass = CardClass.PALADIN,
+				Player2HeroClass = CardClass.PALADIN,
+				Player1Deck = Decks.MidrangeBuffPaladin,
+				Player2Deck = Decks.MidrangeBuffPaladin,
 				FillDecks = false,
 				Shuffle = true,
 				Logging = false
 			};
 
 			Console.WriteLine("Setup POGameHandler");
-			AbstractAgent player1 = new GreedyAgent();
+			AbstractAgent player1 = new IgAgent();
 			AbstractAgent player2 = new GreedyAgent();
 			var gameHandler = new POGameHandler(gameConfig, player1, player2, repeatDraws: false);
 
 			Console.WriteLine("Simulate Games");
 			//gameHandler.PlayGame();
-			gameHandler.PlayGames(nr_of_games: 1000, addResultToGameStats: true, debug: false);
+			gameHandler.PlayGames(nr_of_games: 100, addResultToGameStats: true, debug: false);
 			GameStats gameStats = gameHandler.getGameStats();
-
+			Logger.WriteGameStatsToFile(player1, player2, gameStats);
 			gameStats.printResults();
 
 			Console.WriteLine("Test successful");
